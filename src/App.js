@@ -1,11 +1,6 @@
-
-
+import Login from "./Components/Login";
 function App() {
-  return (
-    <div className="App">
-     <h1>Codeforces Wrapped</h1>
-    </div>
-  );
+  return <Login />;
 }
 
 export default App;
