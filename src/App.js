@@ -1,9 +1,11 @@
-
+import { useAuthContext } from './Hooks/useAuthContext'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import Body from "./Components/Body"
 import Login from "./Components/Login"
 
 function App() {
+  const { user } = useAuthContext()
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -12,7 +14,7 @@ function App() {
           <Routes>
             <Route
               path="/"
-              element={<Navigate to="/login" />}
+              element={user ? <Body /> : <Login />}
             />
             <Route
               path="/user/:username"
@@ -20,7 +22,7 @@ function App() {
             />
             <Route
               path="/login"
-              element={!user ? <Login /> : <Navigate to="/" />}
+              element={user ? <Body /> : <Login />}
             />
           </Routes>
         </div>

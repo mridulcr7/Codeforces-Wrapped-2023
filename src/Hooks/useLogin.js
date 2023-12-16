@@ -12,14 +12,11 @@ export const useLogin = () => {
 
         const userhandle = "https://codeforces.com/api/user.info?handles=" + username;
         const response = await fetch(userhandle);
-
-        const json = await data.json();
-
-        if (!response.ok) {
-            setIsLoading(false)
-            setError(json.error)
-        }
-        if (response.ok) {
+        //console.log(response);
+        const json = await response.json();
+        // console.log(json);
+        
+        if (json.status == "OK") {
             // save the user to local storage
             localStorage.setItem('user', JSON.stringify(json))
 
@@ -30,6 +27,10 @@ export const useLogin = () => {
 
             // update loading state
             setIsLoading(false)
+        }
+        else {
+            setIsLoading(false)
+            setError(json.error)
         }
     }
 
