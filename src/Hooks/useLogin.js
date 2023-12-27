@@ -7,32 +7,35 @@ export const useLogin = () => {
     const { dispatch } = useAuthContext()
 
     const login = async (username) => {
-        setIsLoading(true)
-        setError(null)
+        setIsLoading(true);
+        setError(null);
 
-        const userhandle = "https://codeforces.com/api/user.info?handles=" + username;
-        const response = await fetch(userhandle);
-        //console.log(response);
-        const json = await response.json();
-        // console.log(json);
-        
-        if (json.status == "OK") {
-            // save the user to local storage
-            localStorage.setItem('user', JSON.stringify(json))
+        try {
+            const userhandle = "https://codeforces.com/api/user.info?handles=" + username;
+            const response = await fetch(userhandle);
+            const json = await response.json();
 
-            // update the auth context
-            console.log(json);
+            if (json.status == "OK") {
+                // save the user to local storage
+                localStorage.setItem('user', JSON.stringify(json))
 
-            dispatch({ type: 'LOGIN', payload: json })
+                // update the auth context
 
-            // update loading state
-            setIsLoading(false)
+                dispatch({ type: 'LOGIN', payload: json })
+
+                // update loading state
+                setIsLoading(false)
+            }
+            else {
+                setIsLoading(false)
+                setError(json.error)
+            }
+            
         }
-        else {
+        catch (err) {
             setIsLoading(false)
-            setError(json.error)
+            setError(err.message);
         }
-    }
-
+   }
     return { login, isLoading, error }
 }
