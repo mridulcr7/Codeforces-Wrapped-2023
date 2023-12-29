@@ -14,7 +14,7 @@ const Header = () => {
   };
 
   return (
-    <div className="bg-gray-800 p-4 md:p-8 flex items-center justify-between shadow-lg">
+    <div className="bg-gray-800 p-4 md:p-8 mb-6 flex items-center justify-between shadow-lg">
       <div className="flex items-center space-x-4">
         <img src={cf} alt="Codeforces Logo" className="w-10 h-10" />
         <h1 className="text-white text-lg md:text-2xl font-extrabold tracking-tight">

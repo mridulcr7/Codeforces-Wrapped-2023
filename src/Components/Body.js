@@ -219,9 +219,9 @@ const Body = () => {
       <div className="text-4xl font-bold">Rendering...</div>
     </div>
   ) : (
-      <div className="bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white p-8 rounded-lg shadow-2xl transition-all duration-500">
-        <Header />
-        <h1 className="text-4xl mb-6 font-extrabold text-center">Contest Info</h1>
+      <div className="bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white p-9 rounded-lg shadow-2xl transition-all duration-500">
+        <Header  />
+        <h1 className="text-4xl mb-9 font-extrabold text-center ">Codeforces 2023 Contest Insights</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
           <div className="pb-4 border-b border-gray-700">
