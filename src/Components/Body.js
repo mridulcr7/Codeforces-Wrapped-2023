@@ -131,10 +131,10 @@ const Body = () => {
     for (let i in temp) {
       let item = temp[i];
       if (t1 == null || item.rank < t1) {
-        t1 = item.rank;
+        t1 = item?.rank;
       }
-      if (t13 == null || item.rank > t13) {
-        t13 = item.rank;
+      if (t13 == null || item?.rank > t13) {
+        t13 = item?.rank;
       }
       if (
         t2 == null ||
@@ -240,13 +240,19 @@ const Body = () => {
             <h2 className="text-3xl mb-2 font-semibold">
               Highest Rating Upgrade:
             </h2>
-            <p className="text-2xl">+{highestupgrade}</p>
+            <p className="text-2xl">
+              {highestupgrade == null ? 0 : +highestupgrade}
+            </p>
           </div>
           <div className="pb-4 border-b border-gray-700">
             <h2 className="text-3xl mb-2 font-semibold">
               Highest Rating Downgrade:
             </h2>
-            <p className="text-2xl">-{highestdowngrade}</p>
+            <p className="text-2xl">
+              {highestdowngrade < 0 || highestdowngrade == null
+                ? 0
+                : -highestdowngrade}
+            </p>
           </div>
           <div className="pb-4 border-b border-gray-700">
             <h2 className="text-3xl mb-2 font-semibold">
@@ -272,7 +278,7 @@ const Body = () => {
             <h2 className="text-3xl mb-2 font-semibold">
               Maximum Attempts to Solve a Problem:
             </h2>
-            <p className="text-2xl">{maxattempts + 1}</p>
+            <p className="text-2xl">{maxattempts == 0 ? 0 : maxattempts + 1}</p>
           </div>
           <div className="pb-4 border-b border-gray-700">
             <h2 className="text-3xl mb-2 font-semibold">
@@ -289,46 +295,60 @@ const Body = () => {
         </div>
       </div>
 
-      <div className="mt-8 flex items-center justify-between">
-        <div className="w-1/3">
+      <div className="mt-8 flex flex-col md:flex-row items-center justify-between">
+        <div className="w-full md:w-1/3 mb-4 md:mb-0">
           <h2 className="text-3xl font-semibold mb-4">Topic-wise Breakdown</h2>
           <div className="flex flex-wrap gap-2">
-            {topic.map((item, index) => (
-              <div key={index} className="flex items-center mb-2">
-                <div className="w-6 h-6 rounded-full mr-2" />
-                <span className="text-sm">
-                  {item.tag}:
-                  <span className="ml-1 px-2 py-1 bg-blue-500 text-white rounded-md">
-                    {item.problems}
-                  </span>
-                </span>
+            {topic.length === 0 ? (
+              <div className="text-red-500 font-bold">
+                No problem solved in the contest
               </div>
-            ))}
+            ) : (
+              topic.map((item, index) => (
+                <div key={index} className="flex items-center mb-2">
+                  <div className="w-6 h-6 rounded-full mr-2" />
+                  <span className="text-sm">
+                    <span className="font-bold text-purple-500">
+                      {item.tag}:
+                    </span>
+                    <span className="ml-1 px-2 py-1 bg-blue-500 text-white rounded-md">
+                      {item.problems}
+                    </span>
+                  </span>
+                </div>
+              ))
+            )}
           </div>
         </div>
-        <div className="w-2/3">
-          <div className="w-96 h-96">
-            <Doughnut
-              data={{
-                labels: topic.map((item) => item.tag),
-                datasets: [
-                  {
-                    data: topic.map((item) => item.problems),
-                    backgroundColor: topic.map(
-                      () =>
-                        `#${Math.floor(Math.random() * 16777215).toString(16)}`
-                    ),
+        <div className="w-full md:w-2/3">
+          <div className="relative" style={{ paddingBottom: "50%" }}>
+            <div className="absolute inset-0">
+              <Doughnut
+                data={{
+                  labels: topic.map((item) => item.tag),
+                  datasets: [
+                    {
+                      data: topic.map((item) => item.problems),
+                      backgroundColor: topic.map(
+                        () =>
+                          `#${Math.floor(Math.random() * 16777215).toString(
+                            16
+                          )}`
+                      ),
+                    },
+                  ],
+                }}
+                options={{
+                  plugins: {
+                    legend: {
+                      display: false,
+                    },
                   },
-                ],
-              }}
-              options={{
-                plugins: {
-                  legend: {
-                    display: false,
-                  },
-                },
-              }}
-            />
+                  aspectRatio: 1, // Maintain a square aspect ratio
+                  responsive: true, // Enable responsiveness
+                }}
+              />
+            </div>
           </div>
         </div>
       </div>
