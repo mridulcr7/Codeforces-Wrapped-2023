@@ -219,10 +219,10 @@ const Body = () => {
       <div className="text-4xl font-bold">Rendering...</div>
     </div>
   ) : (
-    <div className="bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white p-8 rounded-lg shadow-2xl transition-all duration-500">
-      <Header />
-      <h1 className="text-5xl mb-6 font-extrabold text-center">Contest Info</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <div className="bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white p-8 rounded-lg shadow-2xl transition-all duration-500">
+        <Header />
+        <h1 className="text-4xl mb-6 font-extrabold text-center">Contest Info</h1>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         <div>
           <div className="pb-4 border-b border-gray-700">
             <h2 className="text-3xl mb-2 font-semibold">No. of Contests:</h2>
@@ -295,9 +295,9 @@ const Body = () => {
         </div>
       </div>
 
-      <div className="mt-8 flex flex-col md:flex-row items-center justify-between">
-        <div className="w-full md:w-1/3 mb-4 md:mb-0">
-          <h2 className="text-3xl font-semibold mb-4">Topic-wise Breakdown</h2>
+        <div className="mt-8 flex flex-col md:flex-row items-center justify-between">
+          <div className="w-full md:w-1/3 mb-4 md:mb-0">
+            <h2 className="text-3xl font-semibold mb-4">Topic-wise Breakdown</h2>
           <div className="flex flex-wrap gap-2">
             {topic.length === 0 ? (
               <div className="text-red-500 font-bold">
@@ -311,7 +311,7 @@ const Body = () => {
                     <span className="font-bold text-purple-500">
                       {item.tag}:
                     </span>
-                    <span className="ml-1 px-2 py-1 bg-blue-500 text-white rounded-md">
+                    <span className="ml-1 px-2 py-1  text-white rounded-md">
                       {item.problems}
                     </span>
                   </span>
@@ -320,8 +320,8 @@ const Body = () => {
             )}
           </div>
         </div>
-        <div className="w-full md:w-2/3">
-          <div className="relative" style={{ paddingBottom: "50%" }}>
+       <div className="w-full md:w-2/3">
+          <div className="relative" style={{ paddingBottom: "40%" }}>
             <div className="absolute inset-0">
               <Doughnut
                 data={{
