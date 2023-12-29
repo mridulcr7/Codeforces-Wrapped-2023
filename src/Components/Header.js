@@ -1,8 +1,6 @@
-import React from 'react';
-import { useLogout } from '../Hooks/useLogout';
-import { useAuthContext } from '../Hooks/useAuthContext';
-import cf from "../Utility/cf.png";
-import logo from "../Utility/logo.jpg";
+import React from "react";
+import { useLogout } from "../Hooks/useLogout";
+import { useAuthContext } from "../Hooks/useAuthContext";
 
 const Header = () => {
   const { logout } = useLogout();
@@ -14,21 +12,15 @@ const Header = () => {
   };
 
   return (
-    <div className="bg-gray-800 p-4 md:p-8 mb-6 flex items-center justify-between shadow-lg">
-      <div className="flex items-center space-x-4">
-        <img src={cf} alt="Codeforces Logo" className="w-10 h-10" />
-        <h1 className="text-white text-lg md:text-2xl font-extrabold tracking-tight">
-          Codeforces Wrapped 2023
-        </h1>
-      </div>
-      <div className="flex items-center space-x-4">
-        <img src={logo} alt="Logo" className="w-11 h-11 rounded-full" />
-        <h2 className="text-white text-md md:text-lg font-semibold">
-          {handle}
-        </h2>
+    <div className="flex flex-col md:flex-row items-center justify-between py-4 px-4 md:px-8 bg-gray-800">
+      <h3 className="text-white text-lg font-bold mb-2 md:mb-0">
+        Codeforces Wrapped 2023
+      </h3>
+      <div className="flex items-center">
+        <h3 className="text-white text-lg mr-2 md:mr-4">{handle}</h3>
         <button
           onClick={handleClick}
-          className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 focus:outline-none focus:shadow-outline-red transition duration-300"
+          className="bg-red-500 text-white px-2 md:px-3 py-1 rounded-md hover:bg-red-600 focus:outline-none focus:shadow-outline-red transition duration-300"
         >
           Go Back
         </button>
