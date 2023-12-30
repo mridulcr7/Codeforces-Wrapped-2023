@@ -35,7 +35,7 @@ const Login = () => {
                         Get Your Codeforces Wrap 2023
                     </button>
                 </form>
-                {error && <div className="text-red-500 mb-4">{error}</div>}
+                {error && <div className="text-red-500 mb-4">Looks like the site is down. Try again later</div>}
                 <div className="mt-8 text-gray-400 text-center">
                     <p className="text-sm">
                         ❤️ Made by Mridul and Anuj

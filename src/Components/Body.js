@@ -26,6 +26,7 @@ const Body = () => {
   const [singleattempt, setsingleattempt] = useState("Hello");
   const [worstrank, setworstrank] = useState("Hello");
   const [topic, settopic] = useState([]);
+  const [error, seterr] = useState(null);
 
   //const [maxattemptsproblem, setmaxattemptsproblem] = useState("Hello");
 
@@ -53,19 +54,59 @@ const Body = () => {
   }, []);
 
   const fetchData = async () => {
-    const data1 = await fetch(
+    const request1 = fetch(
       "https://codeforces.com/api/user.rating?handle=" + handle
-    ); //  userallcontest
-    const data2 = await fetch(
+    ).then(response => response.json());
+    const request2 = fetch(
       "https://codeforces.com/api/contest.list?gym=false"
-    ); // allcontest
-    const data3 = await fetch(
+    ).then(response => response.json());
+    const request3 = fetch(
       "https://codeforces.com/api/user.status?handle=" + handle
-    ); // all problems
-    const json1 = await data1.json();
-    const json2 = await data2.json();
-    const json3 = await data3.json();
-    console.log(json3?.result);
+    ).then(response => response.json());
+
+    Promise.all([request1, request2, request3])
+      .then(([data1, data2,data3]) => {
+        dotherest(data1, data2,data3);
+      })
+      .catch(err => {
+        console.log("Problem");
+        return (
+          <div>
+            Seems like the site is down. Try again later {err}
+          </div>
+        );
+        seterr(1);
+       // console.error(error);
+      });
+  }
+  
+  
+  // {
+  //   try {
+  //     const data1 = await fetch(
+  //       "https://codeforces.com/api/user.rating?handle=" + handle
+  //     ); //  userallcontest
+  //     const data2 = await fetch(
+  //       "https://codeforces.com/api/contest.list?gym=false"
+  //     ); // allcontest
+  //     const data3 = await fetch(
+  //       "https://codeforces.com/api/user.status?handle=" + handle
+  //     ); // all problems
+  //     const json1 = await data1.json();
+  //     const json2 = await data2.json();
+  //     const json3 = await data3.json();
+  //     dotherest(json1, json2, json3);
+  //   }
+  //   catch (e) {
+  //     return (
+  //       <div>
+  //         <h1> Looks like the site is down. Try again later</h1>
+  //       </div>
+  //     )
+  //   }
+  // }
+  function dotherest(json1, json2, json3) {
+
     let c = 0;
 
     let temp = [];
@@ -214,146 +255,149 @@ const Body = () => {
     settopic(t14);
   };
 
-  return maincontest === null ? (
-    <div className="bg-gray-900 text-white min-h-screen flex items-center justify-center">
-      <div className="text-4xl font-bold">Rendering...</div>
-    </div>
-  ) : (
+  return error === null() ? (
+    <div>
+      <h1> Looks like the site is down. Try again later</h1>
+    </div>) : maincontest === null ? (
+      <div className="bg-gray-900 text-white min-h-screen flex items-center justify-center">
+        <div className="text-4xl font-bold">Rendering...</div>
+      </div>
+    ) : (
       <div className="bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 text-white p-9 rounded-lg shadow-2xl transition-all duration-500">
-        <Header  />
+        <Header />
         <h1 className="text-4xl mb-9 font-extrabold text-center ">Codeforces 2023 Contest Insights</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
-          <div className="pb-4 border-b border-gray-700">
-            <h2 className="text-3xl mb-2 font-semibold">No. of Contests:</h2>
-            <p className="text-2xl">{maincontest.length}</p>
+          <div>
+            <div className="pb-4 border-b border-gray-700">
+              <h2 className="text-3xl mb-2 font-semibold">No. of Contests:</h2>
+              <p className="text-2xl">{maincontest.length}</p>
+            </div>
+            <div className="pb-4 border-b border-gray-700">
+              <h2 className="text-3xl mb-2 font-semibold">Best Rank:</h2>
+              <p className="text-2xl">{bestrank}</p>
+            </div>
+            <div className="pb-4 border-b border-gray-700">
+              <h2 className="text-3xl mb-2 font-semibold">Worst Rank:</h2>
+              <p className="text-2xl">{worstrank}</p>
+            </div>
+            <div className="pb-4 border-b border-gray-700">
+              <h2 className="text-3xl mb-2 font-semibold">
+                Highest Rating Upgrade:
+              </h2>
+              <p className="text-2xl">
+                {highestupgrade == null ? 0 : +highestupgrade}
+              </p>
+            </div>
+            <div className="pb-4 border-b border-gray-700">
+              <h2 className="text-3xl mb-2 font-semibold">
+                Highest Rating Downgrade:
+              </h2>
+              <p className="text-2xl">
+                {highestdowngrade < 0 || highestdowngrade == null
+                  ? 0
+                  : -highestdowngrade}
+              </p>
+            </div>
+            <div className="pb-4 border-b border-gray-700">
+              <h2 className="text-3xl mb-2 font-semibold">
+                Highest Rating Achieved:
+              </h2>
+              <p className="text-2xl">{highestrating}</p>
+            </div>
           </div>
-          <div className="pb-4 border-b border-gray-700">
-            <h2 className="text-3xl mb-2 font-semibold">Best Rank:</h2>
-            <p className="text-2xl">{bestrank}</p>
-          </div>
-          <div className="pb-4 border-b border-gray-700">
-            <h2 className="text-3xl mb-2 font-semibold">Worst Rank:</h2>
-            <p className="text-2xl">{worstrank}</p>
-          </div>
-          <div className="pb-4 border-b border-gray-700">
-            <h2 className="text-3xl mb-2 font-semibold">
-              Highest Rating Upgrade:
-            </h2>
-            <p className="text-2xl">
-              {highestupgrade == null ? 0 : +highestupgrade}
-            </p>
-          </div>
-          <div className="pb-4 border-b border-gray-700">
-            <h2 className="text-3xl mb-2 font-semibold">
-              Highest Rating Downgrade:
-            </h2>
-            <p className="text-2xl">
-              {highestdowngrade < 0 || highestdowngrade == null
-                ? 0
-                : -highestdowngrade}
-            </p>
-          </div>
-          <div className="pb-4 border-b border-gray-700">
-            <h2 className="text-3xl mb-2 font-semibold">
-              Highest Rating Achieved:
-            </h2>
-            <p className="text-2xl">{highestrating}</p>
+          <div>
+            <div className="pb-4 border-b border-gray-700">
+              <h2 className="text-3xl mb-2 font-semibold">
+                Total Problems Solved in Contest
+              </h2>
+              <p className="text-2xl">{contestproblems}</p>
+            </div>
+            <div className="pb-4 border-b border-gray-700">
+              <h2 className="text-3xl mb-2 font-semibold">
+                Problems Solved in Single Attempt:
+              </h2>
+              <p className="text-2xl">{singleattempt}</p>
+            </div>
+            <div className="pb-4 border-b border-gray-700">
+              <h2 className="text-3xl mb-2 font-semibold">
+                Maximum Attempts to Solve a Problem:
+              </h2>
+              <p className="text-2xl">{maxattempts == 0 ? 0 : maxattempts + 1}</p>
+            </div>
+            <div className="pb-4 border-b border-gray-700">
+              <h2 className="text-3xl mb-2 font-semibold">
+                Highest Rated Problem Solved:
+              </h2>
+              <p className="text-2xl">{highestratedproblem}</p>
+            </div>
+            <div className="pb-4 border-b border-gray-700">
+              <h2 className="text-3xl mb-2 font-semibold">
+                Most Problems Solved in a Contest:
+              </h2>
+              <p className="text-2xl">{mostproblemscontest}</p>
+            </div>
           </div>
         </div>
-        <div>
-          <div className="pb-4 border-b border-gray-700">
-            <h2 className="text-3xl mb-2 font-semibold">
-              Total Problems Solved in Contest
-            </h2>
-            <p className="text-2xl">{contestproblems}</p>
-          </div>
-          <div className="pb-4 border-b border-gray-700">
-            <h2 className="text-3xl mb-2 font-semibold">
-              Problems Solved in Single Attempt:
-            </h2>
-            <p className="text-2xl">{singleattempt}</p>
-          </div>
-          <div className="pb-4 border-b border-gray-700">
-            <h2 className="text-3xl mb-2 font-semibold">
-              Maximum Attempts to Solve a Problem:
-            </h2>
-            <p className="text-2xl">{maxattempts == 0 ? 0 : maxattempts + 1}</p>
-          </div>
-          <div className="pb-4 border-b border-gray-700">
-            <h2 className="text-3xl mb-2 font-semibold">
-              Highest Rated Problem Solved:
-            </h2>
-            <p className="text-2xl">{highestratedproblem}</p>
-          </div>
-          <div className="pb-4 border-b border-gray-700">
-            <h2 className="text-3xl mb-2 font-semibold">
-              Most Problems Solved in a Contest:
-            </h2>
-            <p className="text-2xl">{mostproblemscontest}</p>
-          </div>
-        </div>
-      </div>
 
         <div className="mt-8 flex flex-col md:flex-row items-center justify-between">
           <div className="w-full md:w-1/3 mb-4 md:mb-0">
             <h2 className="text-3xl font-semibold mb-4">Topic-wise Breakdown</h2>
-          <div className="flex flex-wrap gap-2">
-            {topic.length === 0 ? (
-              <div className="text-red-500 font-bold">
-                No problem solved in the contest
-              </div>
-            ) : (
-              topic.map((item, index) => (
-                <div key={index} className="flex items-center mb-2">
-                  <div className="w-6 h-6 rounded-full mr-2" />
-                  <span className="text-sm">
-                    <span className="font-bold text-purple-500">
-                      {item.tag}:
-                    </span>
-                    <span className="ml-1 px-2 py-1  text-white rounded-md">
-                      {item.problems}
-                    </span>
-                  </span>
+            <div className="flex flex-wrap gap-2">
+              {topic.length === 0 ? (
+                <div className="text-red-500 font-bold">
+                  No problem solved in the contest
                 </div>
-              ))
-            )}
+              ) : (
+                topic.map((item, index) => (
+                  <div key={index} className="flex items-center mb-2">
+                    <div className="w-6 h-6 rounded-full mr-2" />
+                    <span className="text-sm">
+                      <span className="font-bold text-purple-500">
+                        {item.tag}:
+                      </span>
+                      <span className="ml-1 px-2 py-1  text-white rounded-md">
+                        {item.problems}
+                      </span>
+                    </span>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
-        </div>
-       <div className="w-full md:w-2/3">
-          <div className="relative" style={{ paddingBottom: "40%" }}>
-            <div className="absolute inset-0">
-              <Doughnut
-                data={{
-                  labels: topic.map((item) => item.tag),
-                  datasets: [
-                    {
-                      data: topic.map((item) => item.problems),
-                      backgroundColor: topic.map(
-                        () =>
-                          `#${Math.floor(Math.random() * 16777215).toString(
-                            16
-                          )}`
-                      ),
+          <div className="w-full md:w-2/3">
+            <div className="relative" style={{ paddingBottom: "40%" }}>
+              <div className="absolute inset-0">
+                <Doughnut
+                  data={{
+                    labels: topic.map((item) => item.tag),
+                    datasets: [
+                      {
+                        data: topic.map((item) => item.problems),
+                        backgroundColor: topic.map(
+                          () =>
+                            `#${Math.floor(Math.random() * 16777215).toString(
+                              16
+                            )}`
+                        ),
+                      },
+                    ],
+                  }}
+                  options={{
+                    plugins: {
+                      legend: {
+                        display: false,
+                      },
                     },
-                  ],
-                }}
-                options={{
-                  plugins: {
-                    legend: {
-                      display: false,
-                    },
-                  },
-                  aspectRatio: 1, // Maintain a square aspect ratio
-                  responsive: true, // Enable responsiveness
-                }}
-              />
+                    aspectRatio: 1, // Maintain a square aspect ratio
+                    responsive: true, // Enable responsiveness
+                  }}
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  );
+    );
 };
 
 export default Body;
