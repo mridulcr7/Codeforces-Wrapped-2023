@@ -70,11 +70,13 @@ const Body = () => {
       })
       .catch(err => {
         console.log("Problem");
-        return (
-          <div>
-            Seems like the site is down. Try again later {err}
-          </div>
-        );
+        // return (
+        //   <div>
+        //     <h1 className="text-red-500 mb-4"> 
+        //       Seems like the site is down. Try again later {err}
+        //     </h1>
+        //   </div>
+        // );
         seterr(1);
        // console.error(error);
       });
@@ -255,9 +257,12 @@ const Body = () => {
     settopic(t14);
   };
 
-  return error === null() ? (
-    <div>
-      <h1> Looks like the site is down. Try again later</h1>
+  return error !== null ? (
+    <div className="flex items-center justify-center h-screen">
+      <div className="text-center">
+        <h1 className="text-4xl font-bold text-red-500 mb-4">Oops!</h1>
+        <p className="text-gray-600 mb-8">Looks like the site is down. Please try again later.</p>
+      </div>
     </div>) : maincontest === null ? (
       <div className="bg-gray-900 text-white min-h-screen flex items-center justify-center">
         <div className="text-4xl font-bold">Rendering...</div>
